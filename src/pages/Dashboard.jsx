@@ -46,7 +46,7 @@ function Dashboard() {
               <tbody>
                 {reviews.map((review, index) => (
                   <tr key={review.id} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}>
-                    <td className="px-4 py-3 text-sm">{review.id}</td>
+                    <td className="px-4 py-3 text-sm">{index + 1}</td>
                     <td className="px-4 py-3 text-sm">{review.text}</td>
                     <td className="px-4 py-3 text-sm">
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
