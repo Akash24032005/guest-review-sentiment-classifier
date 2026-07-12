@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Loader, ToastProvider, toast } from '../components/ui/index'
@@ -6,6 +7,15 @@ import { Loader, ToastProvider, toast } from '../components/ui/index'
 function Dashboard() {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/login')
+      return
+    }
+  }, [])
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/reviews')

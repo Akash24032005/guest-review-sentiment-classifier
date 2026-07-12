@@ -4,27 +4,26 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { ToastProvider, toast } from '../components/ui/index'
 
-function Login() {
+function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     setLoading(true)
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/auth/login', {
+      const res = await fetch('http://127.0.0.1:8000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       })
       const data = await res.json()
       if (res.ok) {
-        localStorage.setItem('token', data.token)
-        toast.success('Login successful!')
-        navigate('/dashboard')
+        toast.success('Registered successfully! Please login.')
+        navigate('/login')
       } else {
-        toast.error(data.detail || 'Login failed')
+        toast.error(data.detail || 'Registration failed')
       }
     } catch (err) {
       toast.error('Something went wrong')
@@ -37,7 +36,7 @@ function Login() {
       <ToastProvider />
       <Navbar />
       <div className="max-w-md mx-auto px-6 py-20">
-        <h2 className="text-3xl font-bold text-blue-800 dark:text-white mb-6">Login</h2>
+        <h2 className="text-3xl font-bold text-blue-800 dark:text-white mb-6">Register</h2>
         <div className="flex flex-col gap-4">
           <input
             type="email"
@@ -54,16 +53,16 @@ function Login() {
             className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
           />
           <button
-            onClick={handleLogin}
+            onClick={handleRegister}
             disabled={loading}
             className="bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 font-semibold"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Registering...' : 'Register'}
           </button>
           <p className="text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <span onClick={() => navigate('/register')} className="text-blue-600 cursor-pointer hover:underline">
-              Register
+            Already have an account?{' '}
+            <span onClick={() => navigate('/login')} className="text-blue-600 cursor-pointer hover:underline">
+              Login
             </span>
           </p>
         </div>
@@ -73,4 +72,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Register

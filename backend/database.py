@@ -6,6 +6,9 @@ load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI")
 
-client = AsyncIOMotorClient(MONGO_URI)
+client = AsyncIOMotorClient(
+    MONGO_URI,
+    tlsInsecure=True
+)
 db = client["guest_review_db"]
 reviews_collection = db["reviews"]
