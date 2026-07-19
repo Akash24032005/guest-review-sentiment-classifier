@@ -8,6 +8,7 @@ function Navbar() {
         <Link to="/" className="hover:underline">Home</Link>
         <Link to="/about" className="hover:underline">About</Link>
         <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+        <Link to="/classify" className="hover:underline">Classify</Link>
         <Link to="/login" className="hover:underline">Login</Link>
       </div>
     </nav>

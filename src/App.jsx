@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Demo from './pages/Demo'
 import Register from './pages/Register'
+import Classify from './pages/Classify'
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -40,6 +41,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/classify" element={<Classify />} />
         </Routes>
       </BrowserRouter>
     </div>

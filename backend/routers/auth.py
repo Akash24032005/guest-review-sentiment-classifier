@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -43,9 +43,9 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-# POST /api/auth/register
 @router.post("/auth/register", status_code=201)
-async def register(user: UserRegister):
+@limiter.limit("5/minute")
+async def register(request: Request, user: UserRegister):
     existing = await db["users"].find_one({"email": user.email})
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -56,16 +56,15 @@ async def register(user: UserRegister):
     })
     return {"message": "User registered successfully", "id": str(result.inserted_id)}
 
-# POST /api/auth/login
 @router.post("/auth/login", status_code=200)
-async def login(user: UserLogin):
+@limiter.limit("5/minute")
+async def login(request: Request, user: UserLogin):
     db_user = await db["users"].find_one({"email": user.email})
     if not db_user or not verify_password(user.password, db_user["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     token = create_token(str(db_user["_id"]), db_user["email"])
     return {"token": token, "email": db_user["email"]}
 
-# GET /api/auth/me (protected)
 @router.get("/auth/me", status_code=200)
 async def get_me(current_user=Depends(get_current_user)):
     return {"email": current_user["email"], "id": current_user["sub"]}
